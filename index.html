@@ -1,0 +1,158 @@
+<index.html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flash USDT Chatbot - Full Screen</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #chatbot-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+  }
+
+  #chatbot-header {
+    background-color: #1e90ff;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #chatbot-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  #chatbot-input {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  #user-input {
+    flex-grow: 1;
+    border: 2px solid #1e90ff;
+    border-radius: 25px;
+    padding: 10px 20px;
+    margin-right: 15px;
+    font-size: 16px;
+  }
+
+  #send-button {
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .user-message {
+    background-color: #e6f2ff;
+    align-self: flex-end;
+    margin-left: auto;
+  }
+
+  .bot-message {
+    background-color: #f0f0f0;
+    align-self: flex-start;
+  }
+</style>
+</head>
+<body>
+
+<div id="chatbot-window">
+  <div id="chatbot-header">
+    <span>Flash USDT Support</span>
+  </div>
+  <div id="chatbot-messages"></div>
+  <div id="chatbot-input">
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <button id="send-button">Send</button>
+  </div>
+</div>
+
+<script>
+const messagesContainer = document.getElementById('chatbot-messages');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-button');
+
+const botResponses = {
+  "greeting": "Hello and welcome to Flash USDT,\nOur Flash USDT is a unique solution, utilizing validator nodes on the ERC20 network to mask a token with the same contract as USDT. This enables it to function like USDT, being transferable, swappable, bridgeable, p2p sellable, etc.",
+  "verification": "This is the real thing, We have a Trial Plan for you.\nThe trial license costs $65, You get 300 FLASH USDT erc20, I will send you all the information below\n*Trial License*",
+  "conversion": "You can send the coin to any Platform Like Binance, Kraken, Coinbase or any cold wallet.\nThe Blockchain network believes that it's a regular USDT transaction."
+};
+
+function addMessage(content, isUser = false) {
+  const messageElement = document.createElement('div');
+  messageElement.classList.add('message');
+  messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
+  messageElement.textContent = content;
+  messagesContainer.appendChild(messageElement);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function getBotResponse(userMessage) {
+  userMessage = userMessage.toLowerCase();
+  if (userMessage.match(/hi|hello|hey/)) {
+    return botResponses.greeting;
+  } else if (userMessage.match(/scam|real|really|trial|is this real|its a scam|this is a scam/)) {
+    return botResponses.verification;
+  } else if (userMessage.match(/convert|converting|transfer|send|can i convert|how to convert|how to transfer/)) {
+    return botResponses.conversion;
+  } else {
+    return "I'm sorry, I didn't understand that. Could you please rephrase your question?";
+  }
+}
+
+sendButton.addEventListener('click', () => {
+  const userMessage = userInput.value.trim();
+  if (userMessage) {
+    addMessage(userMessage, true);
+    userInput.value = '';
+    setTimeout(() => {
+      const botResponse = getBotResponse(userMessage);
+      addMessage(botResponse);
+    }, 500);
+  }
+});
+
+userInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    sendButton.click();
+  }
+});
+
+// Initial bot message
+addMessage("Hello! How can I assist you today?");
+</script>
+</body>
+</html>
